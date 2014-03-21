@@ -14,10 +14,9 @@ var demo = new Vue({
   el: '#demo',
   data: {
     tags: ['JavaScript', 'MVVM', 'Vue.js'],
-    input: '',
+    inputVal: '',
     inputWidth: 0,
-    tagRegex: /^(.*)[, ]+$/,
-    sepRegex: /[, ]+/m
+    sepRegex: /[, ]+/
   },
   computed: {
     inputID: {
@@ -37,35 +36,31 @@ var demo = new Vue({
       document.getElementById(this.inputID).focus();
     },
     onBlur: function(e) {
-      var val = e.targetVM.input;
-      this.insertTag(val.replace(this.sepRegex, ''));
+      this.mayInsertTags();
     },
     mayDeleteLastTag: function(e) {
-      var val = e.targetVM.input;
-      if (!val) {
+      if (!this.inputVal) {
         this.tags.pop();
       }
     },
     onKeyup: function(e) {
-      var val = e.targetVM.input, matches, tags, i, len;
-      if (val) {
-        matches = this.tagRegex.exec(val);
-        if (matches) {
-          // We need to split tag text with separators
-          // because text pasted from clipboard may contain those.
-          tags = matches[1].split(this.sepRegex);
-          for (i = 0, len = tags.length; i < len; i++) {
-            this.insertTag(tags[i]);
-          }
-        } else {
-          this.adjustInputWidth(val);
-        }
+      var val = this.inputVal;
+      if (val && this.sepRegex.test(val)) {
+        this.mayInsertTags();
+      } else {
+        this.adjustInputWidth(val);
       }
     },
-    insertTag: function(tag) {
-      this.input = '';
-      if (tag && this.tags.indexOf(tag) === -1) {
-        this.tags.push(tag);
+    mayInsertTags: function() {
+      // We need to split tag text with separators
+      // because text pasted from clipboard may contain those.
+      var tags = this.inputVal.split(this.sepRegex), i, len, tag;
+      this.inputVal = '';
+      for (i = 0, len = tags.length; i < len; i++) {
+        tag = tags[i];
+        if (tag && this.tags.indexOf(tag) === -1) {
+          this.tags.push(tag);
+        }
       }
     },
     adjustInputWidth: function(val) {
