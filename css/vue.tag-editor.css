@@ -13,6 +13,8 @@
   *zoom: 1; /* IE7 */
 }
 .tag-editor-text {
+  font-family: Verdana, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  font-size: 14px;
   display: inline-block;
   *display: inline; /* IE7 */
   *zoom: 1; /* IE7 */
@@ -28,6 +30,8 @@
   *zoom: 1; /* IE7 */
 }
 .tag-editor-input {
+  font-family: Verdana, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
+  font-size: 14px;
   padding: 2px 4px;
   border: none;
   outline: none;

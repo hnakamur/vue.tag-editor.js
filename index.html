@@ -3,20 +3,20 @@
 <meta charset="utf-8"/>
 <title>tag editor custom component example</title>
 <link rel="stylesheet" href="css/vue.tag-editor.css">
+<style>
+#demo {
+  width: 200px;
+}
+</style>
 <body>
-<div id="demo" class="tag-editor-field">
+<div id="demo" class="tag-editor-field" v-on="click: onClick">
 
-<div class="tag-editor-tag tag-editor-measure">
-<div class="tag-editor-text"></div>
-<a class="tag-editor-delete">x</a>
-</div>
+<div v-component="tag-editer-tag-measure"></div>
 
 <div v-repeat="tags" class="tag-editor-tag"><div class="tag-editor-text">{{$value}}</div><a class="tag-editor-delete" v-on="click: onClickDelete">x</a></div><!--
-
---><input class="tag-editor-input" v-on="
-  focus: onFocus,
+--><input class="tag-editor-input" id="{{inputID}}" v-style="width: inputWidth + 'px'" v-model="input" v-on="
   blur: onBlur,
-  keydown: mayDeleteLastTag(this) | key 8,
+  keydown: mayDeleteLastTag | key 8,
   keyup: onKeyup
 "></input>
 </div>
