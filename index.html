@@ -9,19 +9,9 @@
 }
 </style>
 <body>
-<div id="demo" class="tag-editor-field" v-on="click: onClick">
-
-<div v-component="tag-editer-tag-measure"></div>
-
-<div v-repeat="tags" class="tag-editor-tag"><div class="tag-editor-text">{{$value}}</div><a class="tag-editor-delete" v-on="click: onClickDelete">x</a></div><!--
---><input class="tag-editor-input" id="{{inputID}}" v-style="width: inputWidth + 'px'" v-model="inputVal" v-on="
-  blur: onBlur,
-  keydown: mayDeleteLastTag | key 8,
-  keyup: onKeyup
-"></input>
-</div>
-
+<div id="demo"><div v-component="tag-editor-field" v-with="tagEditorOptions"></div></div>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/vue/0.9.3/vue.min.js"></script>
 <script src="js/vue.tag-editor.js"></script>
+<script src="js/app.js"></script>
 </body>
 </html>

@@ -10,10 +10,19 @@ Vue.component('tag-editer-tag-measure', {
     '</div>'
 });
 
-var demo = new Vue({
-  el: '#demo',
+Vue.component('tag-editor-field', {
+  replace: true,
+  template:
+    '<div id="{{id}}" class="tag-editor-field" v-on="click: onClick">' +
+    '<div v-component="tag-editer-tag-measure"></div>' +
+    '<div v-repeat="tags" class="tag-editor-tag"><div class="tag-editor-text">{{$value}}</div><a class="tag-editor-delete" v-on="click: onClickDelete">x</a></div>' +
+    '<input class="tag-editor-input" id="{{inputID}}" v-style="width: inputWidth + \'px\'" v-model="inputVal" v-on="' +
+    '  blur: onBlur,' +
+    '  keydown: mayDeleteLastTag | key 8,' +
+    '  keyup: onKeyup' +
+    '"></input>' +
+    '</div>',
   data: {
-    tags: ['JavaScript', 'MVVM', 'Vue.js'],
     inputVal: '',
     inputWidth: 0,
     sepRegex: /[, ]+/
@@ -62,6 +71,7 @@ var demo = new Vue({
           this.tags.push(tag);
         }
       }
+      this.adjustInputWidth('');
     },
     adjustInputWidth: function(val) {
       var tagMeasure = this.$.tagMeasure;
