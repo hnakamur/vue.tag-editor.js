@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8"/>
+<title>tag editor custom component example</title>
+<link rel="stylesheet" href="css/vue.tag-editor.css">
+<body>
+<div id="demo" class="tag-editor-field">
+
+<div class="tag-editor-tag tag-editor-measure">
+<div class="tag-editor-text"></div>
+<a class="tag-editor-delete">x</a>
+</div>
+
+<div v-repeat="tags" class="tag-editor-tag"><div class="tag-editor-text">{{$value}}</div><a class="tag-editor-delete" v-on="click: onClickDelete">x</a></div><!--
+
+--><input class="tag-editor-input" v-on="
+  focus: onFocus,
+  blur: onBlur,
+  keydown: mayDeleteLastTag(this) | key 8,
+  keyup: onKeyup
+"></input>
+</div>
+
+<script src="http://cdnjs.cloudflare.com/ajax/libs/vue/0.9.3/vue.min.js"></script>
+<script src="js/vue.tag-editor.js"></script>
+</body>
+</html>

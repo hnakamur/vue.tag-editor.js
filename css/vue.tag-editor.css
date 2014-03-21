@@ -1,0 +1,38 @@
+.tag-editor-field {
+  border: #000 1px solid;
+  display: inline-block;
+  *display: inline; /* IE7 */
+  *zoom: 1; /* IE7 */
+}
+.tag-editor-tag {
+  background: #cde69c;
+  margin: 4px;
+  padding: 2px 4px;
+  display: inline-block;
+  *display: inline; /* IE7 */
+  *zoom: 1; /* IE7 */
+}
+.tag-editor-text {
+  display: inline-block;
+  *display: inline; /* IE7 */
+  *zoom: 1; /* IE7 */
+}
+.tag-editor-delete {
+  color: #82ad2b;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: 6px;
+  display: inline-block;
+  *display: inline; /* IE7 */
+  *zoom: 1; /* IE7 */
+}
+.tag-editor-input {
+  padding: 2px 4px;
+  border: none;
+  outline: none;
+}
+.tag-editor-measure {
+  position: absolute;
+  left: -999px;
+}
