@@ -6,8 +6,62 @@ Vue.component('tag-editer-tag-measure', {
   template: 
     '<div class="tag-editor-tag tag-editor-measure" v-ref="tagMeasure">' +
     '<div class="tag-editor-text" v-text="text"></div>' +
-    '<a class="tag-editor-delete">x</a>' +
     '</div>'
+});
+
+Vue.component('tag-editor-input', {
+  data: {
+    seperator: /[, ]+/,
+    width: 0,
+    value: ''
+  },
+  replace: true,
+  template: 
+    '<input class="tag-editor-input" v-ref="input" ' +
+    'v-style="width: width + \'px\'" v-model="value" v-on="' +
+    'keydown: mayDeleteLastTag | key 8, keyup: onKeyup, blur: onBlur' +
+    '"></input>',
+  ready: function() {
+    this.adjustWidth();
+  },
+  methods: {
+    mayDeleteLastTag: function(e) {
+      if (!this.value) {
+        this.$parent.tags.pop();
+      }
+    },
+    onBlur: function(e) {
+      this.mayInsertTags();
+    },
+    onKeyup: function(e) {
+      var val = this.value;
+      if (val && this.seperator.test(val)) {
+        this.mayInsertTags();
+      } else {
+        this.adjustWidth();
+      }
+    },
+    mayInsertTags: function() {
+      // We need to split tag text with separators
+      // because text pasted from clipboard may contain those.
+      var tags = this.$parent.tags, words = this.value.split(this.seperator),
+          i, len, word;
+      this.value = '';
+      this.adjustWidth();
+      for (i = 0, len = words.length; i < len; i++) {
+        word = words[i];
+        /* jshint eqeqeq: false */
+        if (word && tags.indexOf(word) < 0) {
+          tags.push(word);
+        }
+      }
+    },
+    adjustWidth: function() {
+      var tagMeasure = this.$parent.$.tagMeasure;
+      tagMeasure.text = this.value + 'WW';
+      this.width = tagMeasure.$el.clientWidth;
+    }
+  }
 });
 
 Vue.component('tag-editor-field', {
@@ -16,67 +70,14 @@ Vue.component('tag-editor-field', {
     '<div id="{{id}}" class="tag-editor-field" v-on="click: onClick">' +
     '<div v-component="tag-editer-tag-measure"></div>' +
     '<div v-repeat="tags" class="tag-editor-tag"><div class="tag-editor-text">{{$value}}</div><a class="tag-editor-delete" v-on="click: onClickDelete">x</a></div>' +
-    '<input class="tag-editor-input" id="{{inputID}}" v-style="width: inputWidth + \'px\'" v-model="inputVal" v-on="' +
-    '  blur: onBlur,' +
-    '  keydown: mayDeleteLastTag | key 8,' +
-    '  keyup: onKeyup' +
-    '"></input>' +
+    '<div v-component="tag-editor-input"></div>' +
     '</div>',
-  data: {
-    inputVal: '',
-    inputWidth: 0,
-    sepRegex: /[, ]+/
-  },
-  computed: {
-    inputID: {
-      $get: function() {
-        return this.$el.id + "-input";
-      }
-    }
-  },
-  ready: function() {
-    this.adjustInputWidth('');
-  },
   methods: {
+    onClick: function(e) {
+      this.$.input.$el.focus();
+    },
     onClickDelete: function(e) {
       this.tags.splice(e.targetVM.$index, 1);
-    },
-    onClick: function(e) {
-      document.getElementById(this.inputID).focus();
-    },
-    onBlur: function(e) {
-      this.mayInsertTags();
-    },
-    mayDeleteLastTag: function(e) {
-      if (!this.inputVal) {
-        this.tags.pop();
-      }
-    },
-    onKeyup: function(e) {
-      var val = this.inputVal;
-      if (val && this.sepRegex.test(val)) {
-        this.mayInsertTags();
-      } else {
-        this.adjustInputWidth(val);
-      }
-    },
-    mayInsertTags: function() {
-      // We need to split tag text with separators
-      // because text pasted from clipboard may contain those.
-      var tags = this.inputVal.split(this.sepRegex), i, len, tag;
-      this.inputVal = '';
-      for (i = 0, len = tags.length; i < len; i++) {
-        tag = tags[i];
-        if (tag && this.tags.indexOf(tag) === -1) {
-          this.tags.push(tag);
-        }
-      }
-      this.adjustInputWidth('');
-    },
-    adjustInputWidth: function(val) {
-      var tagMeasure = this.$.tagMeasure;
-      tagMeasure.text = val + 'WW';
-      this.inputWidth = tagMeasure.$el.clientWidth;
     }
   }
 });
