@@ -12,7 +12,6 @@ Vue.component('tag-editer-tag-measure', {
 Vue.component('tag-editor-input', {
   data: {
     seperator: /[, ]+/,
-    width: 0,
     value: ''
   },
   replace: true,
@@ -21,8 +20,12 @@ Vue.component('tag-editor-input', {
     'v-style="width: width + \'px\'" v-model="value" v-on="' +
     'keydown: mayDeleteLastTag | key 8, keyup: onKeyup, blur: onBlur' +
     '"></input>',
-  ready: function() {
-    this.adjustWidth();
+  computed: {
+    width: function() {
+      var tagMeasure = this.$parent.$.tagMeasure;
+      tagMeasure.text = this.value + 'WW';
+      return tagMeasure.$el.clientWidth;
+    }
   },
   methods: {
     mayDeleteLastTag: function(e) {
@@ -37,8 +40,6 @@ Vue.component('tag-editor-input', {
       var val = this.value;
       if (val && this.seperator.test(val)) {
         this.mayInsertTags();
-      } else {
-        this.adjustWidth();
       }
     },
     mayInsertTags: function() {
@@ -47,7 +48,6 @@ Vue.component('tag-editor-input', {
       var tags = this.$parent.tags, words = this.value.split(this.seperator),
           i, len, word;
       this.value = '';
-      this.adjustWidth();
       for (i = 0, len = words.length; i < len; i++) {
         word = words[i];
         /* jshint eqeqeq: false */
@@ -55,11 +55,6 @@ Vue.component('tag-editor-input', {
           tags.push(word);
         }
       }
-    },
-    adjustWidth: function() {
-      var tagMeasure = this.$parent.$.tagMeasure;
-      tagMeasure.text = this.value + 'WW';
-      this.width = tagMeasure.$el.clientWidth;
     }
   }
 });
