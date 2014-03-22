@@ -62,7 +62,7 @@ Vue.component('tag-editor-input', {
 Vue.component('tag-editor-field', {
   replace: true,
   template:
-    '<div id="{{id}}" class="tag-editor-field" v-on="click: onClick">' +
+    '<div class="tag-editor-field" v-on="click: onClick">' +
     '<div v-component="tag-editer-tag-measure"></div>' +
     '<div v-repeat="tags" class="tag-editor-tag"><div class="tag-editor-text">{{$value}}</div><a class="tag-editor-delete" v-on="click: onClickDelete">x</a></div>' +
     '<div v-component="tag-editor-input"></div>' +
